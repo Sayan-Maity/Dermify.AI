@@ -7,18 +7,20 @@ import "./index.css";
 const theme = extendTheme({
   colors: {
     brand: {
-      primary: "#fff",
-    },
-    dashboard: {
-      primary: "#330582",
+      primary_green_dark: "#3ce2ad",
+      primary_green_light: "#81efcc",
+      primary_blue_dark: "#0078aa",
+      primary_blue_light: "#63d5e1",
     },
     border: "#e4e6ea",
     button: {
-      light_color: "#333",
-      light_backgroundColor: "#fff",
-      light_boxShadow: "0 2px 1px rgb(29 39 59 / 7%)",
+      light_color: "#fff",
+      light_backgroundColor: "#3ce2ad",
       active_light_backgroundColor: "#f2f2f2",
       hover_light_boxShadow: "0px 6px 8px 2px rgb(30 40 61 / 12%)",
+      hover_light_backgroundColor: "transparent",
+      hover_light_color: "#333",
+      hover_light_border: "2px solid #3ce2ad",
 
       dark_color: "#fff",
       dark_backgroundColor: "#330582",
