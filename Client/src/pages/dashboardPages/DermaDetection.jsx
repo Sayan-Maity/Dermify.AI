@@ -5,14 +5,15 @@ import {
   Flex,
   Image,
   Input,
+  // Link,
   ListItem,
   Select,
   Text,
   UnorderedList,
-  background,
   useTheme,
   useToast,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const DermaDetection = () => {
   const theme = useTheme();
@@ -194,7 +195,7 @@ const DermaDetection = () => {
           }} variant="unstyled" p="1.5rem" display="flex" color="#fff" borderRadius="30px">Submit</Button>
         </Flex>
 
-        <Flex width="60%">
+        <Flex width="60%" h="90vh" overflowY="scroll">
           <Flex gap="1rem" flexDir="column" width="100%">
             <Flex
               flexDir="column"
@@ -289,10 +290,24 @@ const DermaDetection = () => {
                 </UnorderedList>)}
               </Flex>
             </Flex>
+            <Flex
+              flexDir="column"
+              border="1px solid #e4e6ea"
+              p="1rem"
+              borderRadius="5px"
+              gap="0.5rem"
+            >
+              <Text fontWeight="500">External Link</Text>
+              <Flex border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+                <Link to={conditionsData[0]?.link} target="_blank" border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+                  {loading ? "Detecting..." : conditionsData[0]?.link}
+                </Link>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </Flex >
   );
 };
 

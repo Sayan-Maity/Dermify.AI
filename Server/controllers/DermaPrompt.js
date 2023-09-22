@@ -19,7 +19,8 @@ module.exports.dermaPrompt = async (req, res) => {
           3. Causes (give atlease 5 causes of the disease)
           4. Communicable (whether the disease is communicable or not, give response in true or false)
           5. Treatment (give atleast 3 best possible way for the treatment of this disease)
-          
+          6. Link (give a wikipedia link related to the below disease)
+
           Name of Disease = ${userPrompt}
           Language = ${language}
           
@@ -32,7 +33,8 @@ module.exports.dermaPrompt = async (req, res) => {
             "symptoms": ["", "", "", "", "", "", "", "", "", ""],
             "causes": ["", "", "", "", ""],
             "communicable": "",
-            "treatment": ["", "", ""]
+            "treatment": ["", "", ""],
+            "link": "",
           },
           ]`,
         },
