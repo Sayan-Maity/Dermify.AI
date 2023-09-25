@@ -24,18 +24,17 @@ module.exports.recommendationPrompt = async (req, res) => {
           Skin Concerns = ${skinConcern}
           
           give me the output in json :
-          
           [
-          {
-            "skinType": "",
-            "skinConcerns": "",
-            "description": "",
-            "specializedTreatment": ["", "", "", "", "", "", ""],
-            "dailyRoutine": ["", "", "", "", ""],
-            "weeklyRoutine": ["", "", "", "", ""],
-            "hydrationAndDiet": ["", "", ""],
-            "advice": ["", "", ""]
-          },
+            {
+              "skinType": "",
+              "skinConcerns": "",
+              "description": "",
+              "specializedTreatment": ["", "", "", "", "", "", ""],
+              "dailyRoutine": ["", "", "", "", ""],
+              "weeklyRoutine": ["", "", "", "", ""],
+              "hydrationAndDiet": ["", "", ""],
+              "advice": ["", "", ""]
+            },
           ]`,
         },
       ],
@@ -44,7 +43,7 @@ module.exports.recommendationPrompt = async (req, res) => {
     });
 
     if (gptResponse) {
-    //   console.log(gptResponse.choices[0].message);
+      //   console.log(gptResponse.choices[0].message);
       res.status(200).json({ gptPrompt: gptResponse.choices[0].message });
     }
   } catch (err) {
