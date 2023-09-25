@@ -25,17 +25,16 @@ module.exports.dermaPrompt = async (req, res) => {
           Language = ${language}
           
           give me the output in json :
-          
           [
-          {
-            "name": "",
-            "description": "",
-            "symptoms": ["", "", "", "", "", "", "", "", "", ""],
-            "causes": ["", "", "", "", ""],
-            "communicable": "",
-            "treatment": ["", "", ""],
-            "link": "",
-          },
+            {
+              "name": "",
+              "description": "",
+              "symptoms": ["", "", "", "", "", "", "", "", "", ""],
+              "causes": ["", "", "", "", ""],
+              "communicable": "",
+              "treatment": ["", "", ""],
+              "link": "",
+            },
           ]`,
         },
       ],
