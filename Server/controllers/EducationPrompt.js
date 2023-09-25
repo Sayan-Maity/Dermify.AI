@@ -22,15 +22,14 @@ module.exports.educationPrompt = async (req, res) => {
           Name of Disease = ${disease}
           
           give me the output in json :
-          
           [
-          {
-            "name" : "",
-            "description": "",
-            "symptoms": ["", "", "", "", "", "", "", "", "", ""],
-            "causes": ["", "", "", "", ""],
-            "prevention": ["", "", ""]
-          },
+            {
+              "name" : "",
+              "description": "",
+              "symptoms": ["", "", "", "", "", "", "", "", "", ""],
+              "causes": ["", "", "", "", ""],
+              "prevention": ["", "", ""]
+            },
           ]`,
         },
       ],
