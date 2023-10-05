@@ -55,7 +55,7 @@ const Register = () => {
       try {
         //checking if user exists
         const check = await Axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/auth/check`,
+          `${import.meta.env.VITE_SERVER_URL}/api/auth/check`,
           {
             email: email,
           }
@@ -72,7 +72,7 @@ const Register = () => {
           });
         }
         const resp = await Axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/auth/register`,
+          `${import.meta.env.VITE_SERVER_URL}/api/auth/register`,
           {
             email: email,
             firstname: firstname,

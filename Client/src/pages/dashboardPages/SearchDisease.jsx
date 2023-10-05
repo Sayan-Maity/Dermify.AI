@@ -20,7 +20,7 @@ const Page3 = () => {
     setLoading(true)
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/educationPrompt",
+        `${import.meta.env.VITE_SERVER_URL}/api/educationPrompt`,
         {
           disease: data,
         }

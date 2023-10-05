@@ -58,7 +58,7 @@ const Login = () => {
       try {
         //checking if user exists
         const resp = await Axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/auth/check`,
+          `${import.meta.env.VITE_SERVER_URL}/api/auth/check`,
           {
             email: email,
           }
@@ -84,7 +84,7 @@ const Login = () => {
         // Validate didToken with server
         try {
           const loginResp = await Axios.post(
-            `${import.meta.env.VITE_SERVER_URL}/auth/login`,
+            `${import.meta.env.VITE_SERVER_URL}/api/auth/login`,
             { email },
             {
               headers: {

@@ -83,7 +83,7 @@ const DermaDetection = () => {
   const handleOpenAIApiCall = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/dermaFinalPrompt",
+        `${import.meta.env.VITE_SERVER_URL}/api/dermaFinalPrompt`,
         {
           userPrompt: data,
           language: language,

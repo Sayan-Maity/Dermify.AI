@@ -47,7 +47,7 @@ const Page4 = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/recommendationPrompt",
+        `${import.meta.env.VITE_SERVER_URL}/api/recommendationPrompt`,
         {
           skinType: skinType,
           skinConcern: skinConcern,
