@@ -1,14 +1,16 @@
-const OpenAIApi = require("openai");
+const {Configuration, OpenAIApi } = require("openai");
 const DermaPromptModel = require("../models/DermaPromptModel");
 
-const openai = new OpenAIApi({
+const configuration = new Configuration({
   apiKey: process.env.OPENAI_KEY,
 });
+
+const openai = new OpenAIApi(configuration);
 
 module.exports.dermaPrompt = async (req, res) => {
   const { userPrompt, language, symptomPrompt } = req.body;
   try {
-    const gptResponse = await openai.chat.completions.create({
+    const gptResponse = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
         {
@@ -56,7 +58,7 @@ module.exports.dermaPrompt = async (req, res) => {
     // });
     if (gptResponse) {
       // console.log(gptResponse.choices[0].message);
-      res.status(200).json({ gptPrompt: gptResponse.choices[0].message });
+      res.status(200).json({ gptPrompt: gptResponse.data.choices[0].message });
     }
   } catch (err) {
     // console.log(err);
