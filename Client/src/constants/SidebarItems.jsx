@@ -1,9 +1,9 @@
 export const SidebarMainItems = [
-    // {
-    //   title: "Dashboard",
-    //   path: "/private/dashboard",
-    //   icon: "MdOutlineSpaceDashboard",
-    // },
+    {
+      title: "Dashboard",
+      path: "/private/dashboard",
+      icon: "MdOutlineSpaceDashboard",
+    },
     {
       title: "Derma Detection",
       path: "/private/derma-detection",
@@ -18,11 +18,6 @@ export const SidebarMainItems = [
       title: "Search Disease",
       path: "/private/search-disease",
       icon: "BsBriefcase",
-    },
-    {
-      title: "Symptom Checker",
-      path: "/private/symptom-checker",
-      icon: "BiCheckShield",
     },
     {
       title: "Health Analytics",
