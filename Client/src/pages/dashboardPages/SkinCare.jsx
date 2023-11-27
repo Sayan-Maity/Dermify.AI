@@ -7,7 +7,7 @@ const Page4 = () => {
   const toast = useToast();
   const [skinType, setSkinType] = useState("");
   const [skinConcern, setSkinConcern] = useState("");
-  const [recommendedData, setRecommendedData] = useState([])
+  const [recommendedData, setRecommendedData] = useState({})
   const [loading, setLoading] = useState(false);
 
   const handleSelectSkinType = (e) => {
@@ -55,16 +55,39 @@ const Page4 = () => {
       );
       if (response.status === 200) {
         setLoading(false);
-        console.log(response.data.gptPrompt.content);
-        const jsonResponse = response.data.gptPrompt.content;
-
-        // Parse the JSON string into a JavaScript object
-        const parsedData = JSON.parse(jsonResponse);
-        setRecommendedData(parsedData);
+        console.log(response);
+        setRecommendedData(jsonParser(response.data));
       }
     } catch (error) {
       setLoading(false);
       console.log(error);
+    }
+  };
+
+  const jsonParser = (response) => {
+    try {
+      if (response && response.content) {
+        // const jsonRegex = /```json\s*([\s\S]+)\s*```/;
+        const jsonRegex = /```json\n([\s\S]+)\n```/;
+        const match = response.content.match(jsonRegex); // Extract the JSON string
+
+        if (match && match[1]) {
+          const trimmedJsonStr = match[1].trim(); // Remove leading and trailing whitespaces
+          const jsonObj = JSON.parse(trimmedJsonStr);
+
+          // console.log("here =>", jsonObj);
+          return jsonObj;
+        } else {
+          console.error('No JSON object found in the response.');
+          return null;
+        }
+      } else {
+        console.error('Invalid response format. No content property found.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error parsing JSON:', error.message);
+      return null;
     }
   };
 
@@ -109,79 +132,77 @@ const Page4 = () => {
         </Flex>
 
 
+        <Flex color="#333" width="100%" maxH="100vh" h="90vh" overflowY="scroll" alignItems="flex-start" justifyContent="flex-start" p="0 1rem">
+          {recommendedData?.skinType !== "" && (
+            <Flex flexDir="column">
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Skin Type</strong></Text>
+                <Text width="100%">{recommendedData?.skinType}</Text>
+              </Flex>
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Skin Concerns</strong></Text>
+                <Text width="100%">{recommendedData?.skinConcerns}</Text>
+              </Flex>
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Description</strong></Text>
+                <Text width="100%">{recommendedData?.description}</Text>
+              </Flex>
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Specialized Treatment</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {recommendedData?.specializedTreatment?.map((specializedTreatment, index) => (
+                      <ListItem key={index}>{specializedTreatment}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
+              </Flex>
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Daily Routine</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {recommendedData?.dailyRoutine?.map((dailyRoutine, index) => (
+                      <ListItem key={index}>{dailyRoutine}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
+              </Flex>
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Weekly Routine</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {recommendedData?.weeklyRoutine?.map((weeklyRoutine, index) => (
+                      <ListItem key={index}>{weeklyRoutine}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
+              </Flex>
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Hydration And Diet</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {recommendedData?.hydrationAndDiet?.map((hydrationAndDiet, index) => (
+                      <ListItem key={index}>{hydrationAndDiet}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
+              </Flex>
+              <Flex gap="1rem" p="1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Advice</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {recommendedData?.advice?.map((advice, index) => (
+                      <ListItem key={index}>{advice}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
+              </Flex>
 
-        {/* ------------------------------------------------------------------ */}
-
-        <Flex color="#333" width="100%" maxH="100vh" h="90vh" overflowY="scroll" alignItems="flex-start" justifyContent="center" p="0 1rem">
-          {recommendedData.length > 0 && (<Flex flexDir="column">
-
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Skin Type</strong></Text>
-              <Text width="100%">{recommendedData[0]?.skinType}</Text>
             </Flex>
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Skin Concerns</strong></Text>
-              <Text width="100%">{recommendedData[0]?.skinConcerns}</Text>
-            </Flex>
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Description</strong></Text>
-              <Text width="100%">{recommendedData[0]?.description}</Text>
-            </Flex>
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Specialized Treatment</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {recommendedData[0]?.specializedTreatment?.map((specializedTreatment, index) => (
-                    <ListItem key={index}>{specializedTreatment}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
-            </Flex>
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Daily Routine</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {recommendedData[0]?.dailyRoutine?.map((dailyRoutine, index) => (
-                    <ListItem key={index}>{dailyRoutine}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
-            </Flex>
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Weekly Routine</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {recommendedData[0]?.weeklyRoutine?.map((weeklyRoutine, index) => (
-                    <ListItem key={index}>{weeklyRoutine}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
-            </Flex>
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Hydration And Diet</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {recommendedData[0]?.hydrationAndDiet?.map((hydrationAndDiet, index) => (
-                    <ListItem key={index}>{hydrationAndDiet}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
-            </Flex>
-            <Flex gap="1rem" p="1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} height="fit-content" p="0.5rem 2rem" borderRadius="5px"><strong>Advice</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {recommendedData[0]?.advice?.map((advice, index) => (
-                    <ListItem key={index}>{advice}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
-            </Flex>
-
-          </Flex>)}
+          )}
           <Flex height="90vh" alignItems="center" width="70%" justifyContent="center">
 
-            {recommendedData.length === 0 && (<Flex><Text>{loading ? `😃 Fetching all the Skin Care Routine for ${skinType} skin type and ${skinConcern} skin concern` : "👋 Please select your skin type and skin concern!"}</Text></Flex>)}
+            {recommendedData?.skinType?.length === 0 && (<Flex><Text>{loading ? `😃 Fetching all the Skin Care Routine for ${skinType} skin type and ${skinConcern} skin concern` : "👋 Please select your skin type and skin concern!"}</Text></Flex>)}
           </Flex>
         </Flex>
 

@@ -1,17 +1,18 @@
-import { Button, Flex, Input, ListItem, Text, UnorderedList, useTheme } from "@chakra-ui/react";
+import { Button, Flex, Input, ListItem, Text, UnorderedList, useTheme, useToast } from "@chakra-ui/react";
 import { SkinDiseaseItems } from "../../constants/SkinDiseaseItems"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 
 const Page3 = () => {
+  const toast = useToast();
   const theme = useTheme()
   const [diseaseName, setDiseaseName] = useState("")
   const [loading, setLoading] = useState(false)
   console.log("Disease name =>", diseaseName)
   const [searchText, setSearchText] = useState('');
   const [filteredItems, setFilteredItems] = useState([]);
-  const [diseaseInformation, setDiseaseInformation] = useState([])
+  const [diseaseInformation, setDiseaseInformation] = useState({})
   const [showDiseaseName, setShowDiseaseName] = useState("")
 
   const handleOpenAIApiCall = async (data) => {
@@ -27,13 +28,27 @@ const Page3 = () => {
       );
       if (response.status === 200) {
         setLoading(false);
-        console.log(response.data.gptPrompt.content);
-        const jsonResponse = response.data.gptPrompt.content;
+        toast({
+          title: "Disease Generated Successfully",
+          variant: "left-accent",
+          position: "top",
+          isClosable: true,
+          duration: 2000,
+          status: "success",
+        });
 
-        // Parse the JSON string into a JavaScript object
-        const parsedData = JSON.parse(jsonResponse);
-        setDiseaseInformation(parsedData)
-        console.log("Parsed data =>", parsedData)
+        console.log(response);
+        setDiseaseInformation(jsonParser(response.data))
+      } else {
+        setLoading(false);
+        toast({
+          title: "Sorry, couldn't generate disease",
+          variant: "left-accent",
+          position: "top",
+          isClosable: true,
+          duration: 2000,
+          status: "error",
+        });
       }
     } catch (error) {
       setLoading(false);
@@ -61,6 +76,32 @@ const Page3 = () => {
     setFilteredItems(filteredDisease);
   }
 
+  const jsonParser = (response) => {
+    try {
+      if (response && response.content) {
+        const jsonRegex = /```json\s*([\s\S]+)\s*```/; // Define a regular expression
+        const match = response.content.match(jsonRegex); // Extract the JSON string
+
+        if (match && match[1]) {
+          const trimmedJsonStr = match[1].trim(); // Remove leading and trailing whitespaces
+          const jsonObj = JSON.parse(trimmedJsonStr);
+
+          // console.log("here =>", jsonObj);
+          return jsonObj;
+        } else {
+          console.error('No JSON object found in the response.');
+          return null;
+        }
+      } else {
+        console.error('Invalid response format. No content property found.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error parsing JSON:', error.message);
+      return null;
+    }
+  };
+
   return (
     <Flex p="2rem"
       // backgroundColor="#ebfffe"
@@ -69,7 +110,7 @@ const Page3 = () => {
       margin="auto"
       color="#74809A" maxH="100vh" >
       <Flex width="1200px" alignItems="flex-start">
-        <Flex width="25rem" flexDir="column" alignItems="center" borderRight="1px solid #333" pr="1rem" gap="1rem" maxH="100vh" h="90vh" overflowY="scroll">
+        <Flex width="40%" flexDir="column" alignItems="center" borderRight="1px solid #333" pr="1rem" gap="1rem" maxH="100vh" h="90vh" overflowY="scroll">
           <Flex gap="1rem">
             <Input type="text" placeholder="Search here ..." value={searchText} onChange={handleFilterSkinDisease} />
             <Button onClick={() => handleOpenAIApiCall(searchText)} isLoading={loading}><BsSearch /></Button>
@@ -84,50 +125,55 @@ const Page3 = () => {
             ))}
           </Flex>
         </Flex>
-        <Flex color="#333" width="100%" maxH="100vh" h="90vh" overflowY="scroll" alignItems="flex-start" justifyContent="center" p="0 1rem">
-          {diseaseInformation.length > 0 && (<Flex flexDir="column">
-
-            <Flex gap="1rem" p="0.5rem 1rem" >
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem"><strong>Name</strong></Text>
-              <Text width="100%">{diseaseInformation[0]?.name}</Text>
-            </Flex>
-            <Flex gap="1rem" p="0.5rem 1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Description</strong></Text>
-              <Text width="100%">{diseaseInformation[0]?.description}</Text>
-            </Flex>
-            <Flex gap="1rem" p="0.5rem 1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Symptoms</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {diseaseInformation[0]?.symptoms?.map((symptom, index) => (
-                    <ListItem key={index}>{symptom}</ListItem>
-                  ))}
-                </UnorderedList>
+        <Flex color="#333" width="100%" maxH="100vh" h="90vh" overflowY="scroll" alignItems="flex-start" justifyContent="flex-start" p="0 1rem">
+          {!diseaseInformation?.description !== "" && (
+            <Flex flexDir="column">
+              <Flex gap="1rem" p="0.5rem 1rem" >
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem"><strong>Name</strong></Text>
+                <Text width="100%">{diseaseInformation?.name}</Text>
+              </Flex>
+              <Flex gap="1rem" p="0.5rem 1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Description</strong></Text>
+                <Text width="100%">{diseaseInformation?.description}</Text>
+              </Flex>
+              <Flex gap="1rem" p="0.5rem 1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Symptoms</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {diseaseInformation?.symptoms?.map((symptom, index) => (
+                      <ListItem key={index}>{symptom}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
+              </Flex>
+              <Flex gap="1rem" p="0.5rem 1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Causes</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {diseaseInformation?.causes?.map((cause, index) => (
+                      <ListItem key={index}>{cause}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
+              </Flex>
+              <Flex gap="1rem" p="0.5rem 1rem">
+                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Prevention</strong></Text>
+                <Flex width="100%">
+                  <UnorderedList>
+                    {diseaseInformation?.prevention?.map((prevention, index) => (
+                      <ListItem key={index}>{prevention}</ListItem>
+                    ))}
+                  </UnorderedList>
+                </Flex>
               </Flex>
             </Flex>
-            <Flex gap="1rem" p="0.5rem 1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Causes</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {diseaseInformation[0]?.causes?.map((cause, index) => (
-                    <ListItem key={index}>{cause}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
-            </Flex>
-            <Flex gap="1rem" p="0.5rem 1rem">
-              <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Prevention</strong></Text>
-              <Flex width="100%">
-                <UnorderedList>
-                  {diseaseInformation[0]?.prevention?.map((prevention, index) => (
-                    <ListItem key={index}>{prevention}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Flex>
-            </Flex>
-          </Flex>)}
+          )}
           <Flex height="90vh" alignItems="center">
-            {diseaseInformation.length === 0 && (<Flex><Text>{loading ? `😃 Fetching all the information about ${showDiseaseName}` : "👋 Please select any particular disease or search about it !"}</Text></Flex>)}
+            {diseaseInformation?.name?.length === 0 && (
+              <Flex>
+                <Text>{loading ? `😃 Fetching all the information about ${showDiseaseName}` : "👋 Please select any particular disease or search about it !"}</Text>
+              </Flex>
+            )}
           </Flex>
         </Flex>
       </Flex>
