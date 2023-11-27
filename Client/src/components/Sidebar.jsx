@@ -1,75 +1,63 @@
 import {
-  Divider,
-  Flex,
-  IconButton,
-  Image,
-  Menu,
-  MenuButton,
-  Text,
-  useTheme,
-  useToast,
-} from "@chakra-ui/react";
-import { useContext, useState } from "react";
-import { PiMagicWand } from "react-icons/pi";
-import { PiStethoscopeFill } from "react-icons/pi";
-import { BiLogOut, BiArrowBack, BiLineChart, BiCheckShield } from "react-icons/bi";
-import { MdOutlineSpaceDashboard } from "react-icons/md";
-import { BsBriefcase, BsChatSquareHeart } from "react-icons/bs";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import {
-  SidebarMainItems,
-} from "../constants/SidebarItems";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+    Divider,
+    Flex,
+    IconButton,
+    Image,
+    Menu,
+    MenuButton,
+    Text,
+    useTheme,
+    useToast,
+  } from "@chakra-ui/react";
+  import { useContext, useState } from "react";
+  import { PiMagicWand } from "react-icons/pi";
+  import { PiStethoscopeFill } from "react-icons/pi";
+  import { BiLogOut, BiArrowBack, BiLineChart, BiCheckShield } from "react-icons/bi";
+  import { MdOutlineSpaceDashboard } from "react-icons/md";
+  import { BsBriefcase, BsChatSquareHeart } from "react-icons/bs";
+  import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../utils/userContext";
 import { magic } from "../utils/magic";
 import Cookies from "js-cookie";
-import { UserContext } from "../utils/userContext";
 import Logo from "../assets/images/logo.png"
-
+import { SidebarMainItems } from "../constants/SidebarItems";
 const iconComponentsMenuItems = {
-  MdOutlineSpaceDashboard,
-  PiStethoscopeFill,
-  BsBriefcase,
-  PiMagicWand,
-  BiLineChart,
-  BsChatSquareHeart, 
-  BiCheckShield
-};
-
-const Sidebar = () => {
-  const theme = useTheme();
-  const toast = useToast();
-  const [navSize, setNavSize] = useState("large");
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext)
-
-  const handleLogoutBtn = () => {
-
-    magic.user.logout().then(() => {
-      toast({
-        title: "Logged out successfully",
-        variant: "left-accent",
-        position: "top",
-        isClosable: true,
-        duration: 2000,
-        status: "error",
-      });
-      setUser({ user: null });
-      Cookies.remove("token");
-      navigate("/");
-    });
+    MdOutlineSpaceDashboard,
+    PiStethoscopeFill,
+    BsBriefcase,
+    PiMagicWand,
+    BiLineChart,
+    BsChatSquareHeart, 
+    BiCheckShield
   };
 
+const Sidebar = () => {
+    const theme = useTheme();
+    const toast = useToast();
+    const [navSize, setNavSize] = useState("large");
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [user, setUser] = useContext(UserContext)
+  
+    const handleLogoutBtn = () => {
+  
+      magic.user.logout().then(() => {
+        toast({
+          title: "Logged out successfully",
+          variant: "left-accent",
+          position: "top",
+          isClosable: true,
+          duration: 2000,
+          status: "error",
+        });
+        setUser({ user: null });
+        Cookies.remove("token");
+        navigate("/");
+      });
+    };
   return (
     <Flex
-      h="100vh"
-      w="100%"
-      flexDir="row"
-      justifyContent="center"
-      alignItems="flex-start"
-      borderRight={`1px solid ${theme.colors.border}`}
-    >
-      <Flex
         pos="sticky"
         p={4}
         h="100vh"
@@ -103,7 +91,7 @@ const Sidebar = () => {
               }
               pos="absolute"
               background="#f2f2f4"
-              borderRadius={20}
+              borderRadius="20px"
               mt={5}
               _hover={{ background: "#c8c8c8" }}
               icon={
@@ -121,7 +109,7 @@ const Sidebar = () => {
             alignItems="flex-start"
             mt={30}
             w={navSize === "small" ? "100%" : "13rem"}
-          >
+            >
             <Text
               wordBreak="keep-all"
               flexWrap="nowrap"
@@ -129,7 +117,7 @@ const Sidebar = () => {
               color="#333"
               fontSize="12px"
               display={navSize === "small" ? "none" : "flex"}
-            >
+              >
               MENU
             </Text>
             {SidebarMainItems.map((item, index) => {
@@ -140,21 +128,22 @@ const Sidebar = () => {
                   to={item?.path}
                   style={{
                     width: "100%",
-                    backgroundColor: `${isActive ? "#f5f2f9" : "transparent"}`,
+                    backgroundColor: `${isActive ? theme.colors.brand.primary_green_light : "transparent"}`,
+                    // color: `${isActive ? "red" : "#333"}`,
+                    borderRadius: "20px",
                   }}
-                  borderRadius={4}
                   key={index}
                 >
                   <Flex
-                    alignItems={navSize === "small" ? "center" : "flex-start"}
+                    alignItems={navSize === "small" ? "center" : "flex-start"} borderRadius="20px"
                   >
                     <Menu placement="right">
                       <Text
                         padding="0.4rem 1rem"
-                        borderRadius={4}
+                        borderRadius="20px"
                         _hover={{
                           textDecor: "none",
-                          backgroundColor: "#f5f2f9",
+                          backgroundColor: theme.colors.brand.primary_green_light,
                         }}
                         w={navSize === "large" && "100%"}
                       >
@@ -163,14 +152,14 @@ const Sidebar = () => {
                             <IconComponent
                               style={{
                                 fontSize: "1.4rem",
-                                color: `${isActive ? "#330582" : "#333"}`,
+                                color: "#333",
                               }}
                             />
                             <Text
                               fontSize="14px"
                               ml={5}
                               style={{
-                                color: `${isActive ? "#330582" : "#333"}`,
+                                color: "#333",
                               }}
                               display={navSize === "small" ? "none" : "flex"}
                             >
@@ -200,17 +189,17 @@ const Sidebar = () => {
             to="/"
             style={{
               width: "100%",
+              borderRadius: "20px"
             }}
-            borderRadius={4}
           >
             <Flex alignItems={navSize === "small" ? "center" : "flex-start"}>
               <Menu placement="right">
                 <Text
                   padding="0.4rem 1rem"
-                  borderRadius={4}
+                  borderRadius="20px"
                   _hover={{
                     textDecor: "none",
-                    backgroundColor: "#f5f2f9",
+                    backgroundColor: theme.colors.brand.primary_green_light,
                   }}
                   w={navSize === "large" && "100%"}
                 >
@@ -241,10 +230,10 @@ const Sidebar = () => {
               <Menu placement="right">
                 <Text
                   padding="0.4rem 1rem"
-                  borderRadius={4}
+                  borderRadius="20px"
                   _hover={{
                     textDecor: "none",
-                    backgroundColor: "#f5f2f9",
+                    backgroundColor: theme.colors.brand.primary_green_light,
                   }}
                   w={navSize === "large" && "100%"}
                 >
@@ -266,11 +255,7 @@ const Sidebar = () => {
           </button>
         </Flex>
       </Flex>
-      <Flex w="100%">
-        <Outlet />
-      </Flex>
-    </Flex>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar
