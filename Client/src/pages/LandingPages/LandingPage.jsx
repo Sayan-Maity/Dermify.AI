@@ -14,6 +14,8 @@ import Raj from "../../assets/developers/Raj.jpeg"
 import Pritam from "../../assets/developers/Pritam.jpeg"
 import Joybroto from "../../assets/developers/Joybroto.jpeg"
 import { PiStethoscopeFill } from "react-icons/pi";
+import FeaturedCard from "../../components/FeaturedCard";
+import { FeaturedCardContent } from "../../constants/FeaturedCardContent";
 
 const LandingPage = () => {
   const toast = useToast();
@@ -25,14 +27,14 @@ const LandingPage = () => {
   }
 
   const handleComingSoon = () => {
-      toast({
-        title: "Coming Soon, Stay tuned",
-        variant: "left-accent",
-        position: "top",
-        isClosable: true,
-        duration: 2000,
-        status: "info",
-      });
+    toast({
+      title: "Coming Soon, Stay tuned",
+      variant: "left-accent",
+      position: "top",
+      isClosable: true,
+      duration: 2000,
+      status: "info",
+    });
   }
 
 
@@ -85,186 +87,13 @@ const LandingPage = () => {
         </Flex>
 
         <Flex width={{ base: "full", xl: "1280px" }} p="3rem" flexDir="row" flexWrap="wrap" gap="3rem 1rem" justifyContent="center" alignItems="center">
-          <Flex p="2rem" width="20rem" borderRadius="10px" backgroundColor="#fff" flexDir="column" gap="1rem">
-            <Text fontSize="1.5rem">Derma Detection</Text>
-            <Text fontSize="1rem">Utilizes advanced image analysis to identify and diagnose skin conditions, offering users instant insights into their dermatological health</Text>
-            <Button
-              target="_blank"
-              onClick={() => navigate("/private/derma-detection")}
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Explore
-            </Button>
 
-          </Flex>
-          <Flex p="2rem" width="20rem" borderRadius="10px" backgroundColor="#fff" flexDir="column" gap="1rem" transform="translateY(-2rem)">
-            <Text fontSize="1.5rem">Skin Care</Text>
-            <Text fontSize="1rem">Provides personalized skincare recommendations and routines based on individual skin types and concerns, promoting healthier and more radiant skin</Text>
-            <Button
-              target="_blank"
-              onClick={() => navigate("/private/derma-detection")}
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Explore
-            </Button>
+          <FeaturedCard featuredItem={FeaturedCardContent[0]} />
+          <FeaturedCard featuredItem={FeaturedCardContent[1]} />
+          <FeaturedCard featuredItem={FeaturedCardContent[2]} />
+          <FeaturedCard featuredItem={FeaturedCardContent[3]} />
+          <FeaturedCard featuredItem={FeaturedCardContent[4]} />
 
-          </Flex>
-          <Flex p="2rem" width="20rem" borderRadius="10px" backgroundColor="#fff" flexDir="column" gap="1rem">
-            <Text fontSize="1.5rem">Search Disease</Text>
-            <Text fontSize="1rem"> Empowers users to access a vast database of medical information, enabling quick and accurate searches for comprehensive disease-related details</Text>
-            <Button
-              target="_blank"
-              onClick={() => navigate("/private/derma-detection")}
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Explore
-            </Button>
-
-          </Flex>
-          <Flex p="2rem" width="20rem" borderRadius="10px" backgroundColor="#fff" flexDir="column" gap="1rem">
-            <Text fontSize="1.5rem">Symptom Checker</Text>
-            <Text fontSize="1rem"> Offers a user-friendly interface to input and analyze symptoms, aiding in the preliminary assessment of potential health issues and guiding users towards appropriate medical care.</Text>
-            <Button
-              target="_blank"
-              onClick={() => handleComingSoon()}
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor="#11bfdb"
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: "2px solid #11bfdb"
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Comming Soon...
-            </Button>
-
-          </Flex>
-          <Flex p="2rem" width="20rem" borderRadius="10px" backgroundColor="#fff" flexDir="column" gap="1rem" transform="translateY(-2rem)">
-            <Text fontSize="1.5rem">Health Analytics</Text>
-            <Text fontSize="1rem"> Harnesses data-driven insights to help users monitor and optimize their overall health, offering valuable information for making informed lifestyle choices</Text>
-            <Button
-              target="_blank"
-              onClick={() => handleComingSoon()}
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor="#11bfdb"
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: "2px solid #11bfdb"
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Comming Soon...
-            </Button>
-
-          </Flex>
-          <Flex p="2rem" width="20rem" borderRadius="10px" backgroundColor="#fff" flexDir="column" gap="1rem">
-            <Text fontSize="1.5rem">Community Forum</Text>
-            <Text fontSize="1rem">Fosters a supportive online community where users can share experiences, seek advice, and connect with others facing similar health challenges </Text>
-            <Button
-              target="_blank"
-              onClick={() => handleComingSoon()}
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor="#11bfdb"
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: "2px solid #11bfdb"
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Comming Soon...
-            </Button>
-
-          </Flex>
         </Flex>
       </Flex>
 
@@ -298,7 +127,7 @@ const LandingPage = () => {
             <Text fontSize="1.2rem" >Sayan Maity</Text>
             <Button
               target="_blank"
-              
+
               loadingText="Please Wait..."
               variant="unstyled"
               gap="0.5rem"
@@ -331,7 +160,7 @@ const LandingPage = () => {
             <Text fontSize="1.2rem" >Joybroto Das</Text>
             <Button
               target="_blank"
-              
+
               loadingText="Please Wait..."
               variant="unstyled"
               gap="0.5rem"
@@ -364,7 +193,7 @@ const LandingPage = () => {
             <Text fontSize="1.2rem" >Pritam Dey</Text>
             <Button
               target="_blank"
-              
+
               loadingText="Please Wait..."
               variant="unstyled"
               gap="0.5rem"
@@ -397,7 +226,7 @@ const LandingPage = () => {
             <Text fontSize="1.2rem" >Samriddhi Halder</Text>
             <Button
               target="_blank"
-              
+
               loadingText="Please Wait..."
               variant="unstyled"
               gap="0.5rem"
@@ -430,7 +259,7 @@ const LandingPage = () => {
             <Text fontSize="1.2rem" >Raj Bhowmik</Text>
             <Button
               target="_blank"
-              
+
               loadingText="Please Wait..."
               variant="unstyled"
               gap="0.5rem"
@@ -463,7 +292,7 @@ const LandingPage = () => {
             <Text fontSize="1.2rem" >Debdutta Basu</Text>
             <Button
               target="_blank"
-              
+
               loadingText="Please Wait..."
               variant="unstyled"
               gap="0.5rem"
