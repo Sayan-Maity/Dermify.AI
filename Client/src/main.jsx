@@ -6,6 +6,10 @@ import "./index.css";
 
 const theme = extendTheme({
   colors: {
+    dashboard: {
+      dashboard_green_gradient: "#3ce2ad6e",
+      dashboard_blue_gradient: "#0078aa78",
+    },
     brand: {
       primary_green_dark: "#3ce2ad",
       primary_green_light: "#81efcc",
