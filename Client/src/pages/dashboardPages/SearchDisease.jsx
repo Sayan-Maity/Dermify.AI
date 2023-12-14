@@ -3,6 +3,7 @@ import { SkinDiseaseItems } from "../../constants/SkinDiseaseItems"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import DashboardWrapper from "../../components/DashboardWrapper";
 
 const Page3 = () => {
   const toast = useToast();
@@ -103,21 +104,15 @@ const Page3 = () => {
   };
 
   return (
-    <Flex p="2rem"
-      // backgroundColor="#ebfffe"
-      alignItems="flex-start"
-      justifyContent="center"
-      margin="auto"
-      color="#74809A" maxH="100vh" >
-      <Flex width="1200px" alignItems="flex-start">
-        <Flex width="40%" flexDir="column" alignItems="center" borderRight="1px solid #333" pr="1rem" gap="1rem" maxH="100vh" h="90vh" overflowY="scroll">
-          <Flex gap="1rem">
-            <Input type="text" placeholder="Search here ..." value={searchText} onChange={handleFilterSkinDisease} />
+    <DashboardWrapper >
+      <Flex width="100%" alignItems="flex-start">
+        <Flex width="40%" flexDir="column" alignItems="center" pr="1rem" gap="1rem" maxH="100vh" h="90vh" overflowY="auto">
+          <Flex gap="1rem" w="100%">
+            <Input type="text" placeholder="Search here ..." value={searchText} onChange={handleFilterSkinDisease} _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }} />
             <Button onClick={() => handleOpenAIApiCall(searchText)} isLoading={loading}><BsSearch /></Button>
           </Flex>
 
-          <Flex flexDir="column" gap="1rem" width="100%">
-
+          <Flex flexDir="column" gap="1rem" w="100%">
             {filteredItems.map((item, index) => (
               <Button isDisabled={loading} variant="unstyled" textAlign="left" fontWeight="500" color="#333" key={index} onClick={() => { setDiseaseName(item); handleOpenAIApiCall(item) }} p="0.5rem 2rem" backgroundColor="#81efcc" cursor="pointer" borderRadius="5px">
                 <Text>{item}</Text>
@@ -125,45 +120,107 @@ const Page3 = () => {
             ))}
           </Flex>
         </Flex>
-        <Flex color="#333" width="100%" maxH="100vh" h="90vh" overflowY="scroll" alignItems="flex-start" justifyContent="flex-start" p="0 1rem">
+        <Flex color="#333" width="60%" maxH="100vh" h="90vh" overflowY="auto" alignItems="flex-start" justifyContent="flex-start" p="0 1rem">
           {!diseaseInformation?.description !== "" && (
-            <Flex flexDir="column">
-              <Flex gap="1rem" p="0.5rem 1rem" >
-                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem"><strong>Name</strong></Text>
-                <Text width="100%">{diseaseInformation?.name}</Text>
-              </Flex>
-              <Flex gap="1rem" p="0.5rem 1rem">
-                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Description</strong></Text>
-                <Text width="100%">{diseaseInformation?.description}</Text>
-              </Flex>
-              <Flex gap="1rem" p="0.5rem 1rem">
-                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Symptoms</strong></Text>
-                <Flex width="100%">
-                  <UnorderedList>
-                    {diseaseInformation?.symptoms?.map((symptom, index) => (
-                      <ListItem key={index}>{symptom}</ListItem>
-                    ))}
-                  </UnorderedList>
+            <Flex width="100%" h="90vh" overflowY="auto">
+              <Flex gap="1rem" flexDir="column" width="100%">
+                <Flex
+                  flexDir="column"
+                  border="1px solid #e4e6ea"
+                  p="1rem"
+                  borderRadius="5px"
+                  gap="0.5rem"
+                >
+                  <Text fontWeight="500">Name of disease</Text>
+                  <Text border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+                    {loading ? (
+                      "Searching..."
+                    ) :
+                      (diseaseInformation?.name)
+                    }
+                  </Text>
                 </Flex>
-              </Flex>
-              <Flex gap="1rem" p="0.5rem 1rem">
-                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Causes</strong></Text>
-                <Flex width="100%">
-                  <UnorderedList>
-                    {diseaseInformation?.causes?.map((cause, index) => (
-                      <ListItem key={index}>{cause}</ListItem>
-                    ))}
-                  </UnorderedList>
+                <Flex
+                  flexDir="column"
+                  border="1px solid #e4e6ea"
+                  p="1rem"
+                  borderRadius="5px"
+                  gap="0.5rem"
+                >
+                  <Text fontWeight="500">Description</Text>
+                  <Text border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+                    {loading ? (
+                      "Searching..."
+                    ) :
+                      (diseaseInformation?.description)
+                    }
+                  </Text>
                 </Flex>
-              </Flex>
-              <Flex gap="1rem" p="0.5rem 1rem">
-                <Text width="10rem" backgroundColor={theme.colors.brand.primary_blue_light} borderRadius="5px" p="0.5rem 1rem" height="fit-content"><strong>Prevention</strong></Text>
-                <Flex width="100%">
-                  <UnorderedList>
-                    {diseaseInformation?.prevention?.map((prevention, index) => (
-                      <ListItem key={index}>{prevention}</ListItem>
-                    ))}
-                  </UnorderedList>
+                <Flex
+                  flexDir="column"
+                  border="1px solid #e4e6ea"
+                  p="1rem"
+                  borderRadius="5px"
+                  gap="0.5rem"
+                >
+                  <Text fontWeight="500">Symptoms</Text>
+                  <Text border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+                    {loading ? (
+                      "Searching..."
+                    ) :
+                      (
+                        <UnorderedList>
+                          {diseaseInformation?.symptoms?.map((symptom, index) => (
+                            <ListItem key={index}>{symptom}</ListItem>
+                          ))}
+                        </UnorderedList>
+                      )
+                    }
+                  </Text>
+                </Flex>
+                <Flex
+                  flexDir="column"
+                  border="1px solid #e4e6ea"
+                  p="1rem"
+                  borderRadius="5px"
+                  gap="0.5rem"
+                >
+                  <Text fontWeight="500">Causes</Text>
+                  <Text border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+                    {loading ? (
+                      "Searching..."
+                    ) :
+                      (
+                        <UnorderedList>
+                          {diseaseInformation?.causes?.map((cause, index) => (
+                            <ListItem key={index}>{cause}</ListItem>
+                          ))}
+                        </UnorderedList>
+                      )
+                    }
+                  </Text>
+                </Flex>
+                <Flex
+                  flexDir="column"
+                  border="1px solid #e4e6ea"
+                  p="1rem"
+                  borderRadius="5px"
+                  gap="0.5rem"
+                >
+                  <Text fontWeight="500">Prevention</Text>
+                  <Text border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+                    {loading ? (
+                      "Searching..."
+                    ) :
+                      (
+                        <UnorderedList>
+                          {diseaseInformation?.prevention?.map((prevention, index) => (
+                            <ListItem key={index}>{prevention}</ListItem>
+                          ))}
+                        </UnorderedList>
+                      )
+                    }
+                  </Text>
                 </Flex>
               </Flex>
             </Flex>
@@ -177,10 +234,7 @@ const Page3 = () => {
           </Flex>
         </Flex>
       </Flex>
-
-
-
-    </Flex >
+    </DashboardWrapper >
   );
 };
 
