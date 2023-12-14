@@ -55,12 +55,29 @@ const Page4 = () => {
       );
       if (response.status === 200) {
         setLoading(false);
+        toast({
+          title: "Recommendation Generated Successfully",
+          variant: "left-accent",
+          position: "top",
+          isClosable: true,
+          duration: 2000,
+          status: "success",
+        });
+
         console.log(response);
-        setRecommendedData(jsonParser(response.data));
+        const recommendedData = jsonParser(response.data);
+        setRecommendedData(recommendedData)
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      toast({
+          title: "Sorry, couldn't generate recommendation",
+          variant: "left-accent",
+          position: "top",
+          isClosable: true,
+          duration: 2000,
+          status: "error",
+        });
     }
   };
 
@@ -104,6 +121,7 @@ const Page4 = () => {
             value={skinType}
             onChange={handleSelectSkinType}
             cursor="pointer"
+            _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }}
           >
             <option value="Normal">Normal</option>
             <option value="Oily">Oily</option>
@@ -116,6 +134,7 @@ const Page4 = () => {
             value={skinConcern}
             onChange={handleSelectSkinConcern}
             cursor="pointer"
+            _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }}
           >
             <option value="Acne">Acne</option>
             <option value="Wrinkles and fine lines">Wrinkles and fine lines</option>
