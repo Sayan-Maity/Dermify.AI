@@ -5,15 +5,14 @@ import {
   Flex,
   Image,
   Input,
-  // Link,
   ListItem,
-  Select,
   Text,
   UnorderedList,
   useTheme,
   useToast,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import DashboardWrapper from "../../components/DashboardWrapper";
 
 const DermaDetection = () => {
   const theme = useTheme();
@@ -24,7 +23,6 @@ const DermaDetection = () => {
   const [loading, setLoading] = useState(false);
 
   const [conditionsData, setConditionsData] = useState({});
-  const [language, setLanguage] = useState("English");
   const [symptomPrompt, setSymptomPrompt] = useState("");
 
   const handleMultipleImages = (event) => {
@@ -76,17 +74,12 @@ const DermaDetection = () => {
     }
   };
 
-  const handleSelectLanguage = (e) => {
-    setLanguage(e.target.value);
-  };
-
   const handleOpenAIApiCall = async (data) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/dermaFinalPrompt`,
         {
           userPrompt: data,
-          language: language,
           symptomPrompt: symptomPrompt,
         }
       );
@@ -128,15 +121,8 @@ const DermaDetection = () => {
   };
 
   return (
-    <Flex
-      p="2rem"
-      alignItems="flex-start"
-      justifyContent="center"
-      margin="auto"
-      color="#74809A"
-      maxH="100vh" overflowY="scroll"
-    >
-      <Flex gap="2rem" width="1200px" alignItems="flex-start">
+    <DashboardWrapper>
+      <Flex gap="2rem" width="100%" alignItems="flex-start">
         <Flex flexDir="column" width="40%" gap="1rem">
           {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
           <label
@@ -192,21 +178,11 @@ const DermaDetection = () => {
             </Flex>
           )}
 
-          <Select
-            value={language}
-            onChange={handleSelectLanguage}
-            cursor="pointer"
-          >
-            <option value="English">English</option>
-            <option value="Bengali">Bengali</option>
-            <option value="Hindi">Hindi</option>
-            <option value="Marathi">Marathi</option>
-            <option value="Bahasa">Bahasa</option>
-          </Select>
           <Input
             type="text"
             placeholder="Describe your problem in short (optional)"
             value={symptomPrompt}
+            _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }}
             onChange={(e) => setSymptomPrompt(e.target.value)}
           />
           {/* <Button onClick={handleUpload} isLoading={loading} loadingText="Detecting...">
@@ -220,7 +196,7 @@ const DermaDetection = () => {
           }} variant="unstyled" p="1.5rem" display="flex" color="#fff" borderRadius="30px">Submit</Button>
         </Flex>
 
-        <Flex width="60%" h="90vh" overflowY="scroll">
+        <Flex width="60%" h="90vh" overflowY="auto">
           <Flex gap="1rem" flexDir="column" width="100%">
             <Flex
               flexDir="column"
@@ -323,7 +299,7 @@ const DermaDetection = () => {
               gap="0.5rem"
             >
               <Text fontWeight="500">External Link</Text>
-              <Flex border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
+              <Flex border="1px solid #e4e6ea" p="1rem" borderRadius="5px" _hover={{ color: theme.colors.brand.primary_green_dark, textDecoration: "underline" }}>
                 <Link to={conditionsData?.link} target="_blank" border="1px solid #e4e6ea" p="1rem" borderRadius="5px">
                   {loading ? "Detecting..." : conditionsData?.link}
                 </Link>
@@ -332,7 +308,7 @@ const DermaDetection = () => {
           </Flex>
         </Flex>
       </Flex>
-    </Flex >
+    </DashboardWrapper>
   );
 };
 
