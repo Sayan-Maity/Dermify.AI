@@ -18,7 +18,81 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    diseaseHistory: [String]
+    diseaseHistory: [String],
+    lifestyleAnalyticsData: [
+      {
+        date: {
+          type: String,
+        },
+        sleep: {
+          type: Number,
+        },
+        exercise: {
+          type: Number,
+        },
+        sunlight: {
+          type: Number,
+        },
+      },
+    ],
+    skinCareRoutineData: [
+      {
+        date: {
+          type: String,
+        },
+        cleanser: {
+          type: Number,
+        },
+        moisturizer: {
+          type: Number,
+        },
+        toner: {
+          type: Number,
+        },
+      },
+    ],
+    stressData: [
+      {
+        date: {
+          type: String,
+        },
+        stress: {
+          type: Number,
+        },
+        relaxation: {
+          type: Number,
+        },
+        meditation: {
+          type: Number,
+        },
+      },
+    ],
+    dietData: [
+      {
+        date: {
+          type: String,
+        },
+        fruit: {
+          type: Number,
+        },
+        vegetable: {
+          type: Number,
+        },
+        meat: {
+          type: Number,
+        },
+      },
+    ],
+    waterIntakeData: [
+      {
+        date: {
+          type: String,
+        },
+        water: {
+          type: Number,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
