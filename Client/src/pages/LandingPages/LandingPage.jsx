@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Input, Text, Textarea, useTheme, useToast } from "@chakra-ui/react";
+import { Button, Flex, Image, Input, Text, Textarea, VStack, useTheme, useToast } from "@chakra-ui/react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import LandingVector from "../../assets/images/LandingVector.png";
@@ -16,6 +16,8 @@ import Joybroto from "../../assets/developers/Joybroto.jpeg"
 import { PiStethoscopeFill } from "react-icons/pi";
 import FeaturedCard from "../../components/FeaturedCard";
 import { FeaturedCardContent } from "../../constants/FeaturedCardContent";
+import SectionTitle from "../../components/SectionTitle";
+import { LandingSectionTitle } from "../../constants/LandingSectionTitle";
 
 const LandingPage = () => {
   const toast = useToast();
@@ -81,249 +83,45 @@ const LandingPage = () => {
 
       {/* -------------------------------  Features Section  -------------------------------- */}
       <Flex flexDir="column" width="100%" backgroundColor="#81efcc" alignItems="center" justifyContent="center">
-        <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="center" flexDir="column" alignItems="center" >
-          <Text fontSize="3rem" fontWeight="500" textAlign="center" >Features</Text>
-          <Text fontSize="1.5rem" fontWeight="400" textAlign="center" >Enjoy our 3 best AI features to help you with Derma Disease Detection</Text>
-        </Flex>
+        <SectionTitle title={LandingSectionTitle[1].title} description={LandingSectionTitle[1].description} />
 
         <Flex width={{ base: "full", xl: "1280px" }} p="3rem" flexDir="row" flexWrap="wrap" gap="3rem 1rem" justifyContent="center" alignItems="center">
 
           <FeaturedCard featuredItem={FeaturedCardContent[0]} />
           <FeaturedCard featuredItem={FeaturedCardContent[1]} />
-          <FeaturedCard featuredItem={FeaturedCardContent[2]} />
+          {/* <FeaturedCard featuredItem={FeaturedCardContent[2]} /> */}
           <FeaturedCard featuredItem={FeaturedCardContent[3]} />
           <FeaturedCard featuredItem={FeaturedCardContent[4]} />
+          <FeaturedCard featuredItem={FeaturedCardContent[5]} />
 
         </Flex>
       </Flex>
 
-      {/* -------------------------------  About Us Section  -------------------------------- */}
-      <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="center" flexDir="column" alignItems="center" >
-        <Text fontSize="3rem" fontWeight="500" textAlign="center" >Why Choose Us?</Text>
-        <Text fontSize="1.5rem" fontWeight="400" textAlign="center" >We are a team of 3 students from BITS Pilani, Goa Campus</Text>
-      </Flex>
+      {/* -------------------------------  Why Choose Us Section  -------------------------------- */}
+      <SectionTitle title={LandingSectionTitle[2].title} description={LandingSectionTitle[2].description} />
 
-      <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="space-between" flexDir="row" alignItems="center" >
+      <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="space-between" flexDir="row" alignItems="flex-start" >
         <Flex width="50%" alignItems="center" justifyContent="center">
           <Image src={WhyChooseUs} height="30rem" />
         </Flex>
-        <Flex width="50%" >
-          Welcome to Dermify.AI
-        </Flex>
-      </Flex>
-
-      {/* -------------------------------  Developers Team Section  -------------------------------- */}
-      <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="center" flexDir="column" alignItems="center" >
-        <Text fontSize="3rem" fontWeight="500" textAlign="center" >Meet our Developers</Text>
-        <Text fontSize="1.5rem" fontWeight="400" textAlign="center" >We are a team of 6 students majoring in CSE from UEM, Saltlake</Text>
-      </Flex>
-
-      <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="center" flexDir="row" alignItems="center" gap="1rem" flexWrap="wrap">
-        <Flex flexDir="column" width="15rem" borderRadius="10px" alignItems="center" justifyContent="center" border="2px solid #81efcc" p="0.2rem">
-          <Flex p="1rem" backgroundColor="#81efcc" width="100%" height="100%" alignItems="center" justifyContent="center" borderTopLeftRadius="10px" borderTopRightRadius="10px">
-            <Image src={Sayan} width="8rem" height="8rem" objectFit="cover" borderRadius="50%" border="3px solid #fff" />
-          </Flex>
-          <Flex p="1rem" flexDir="column" gap="1rem" alignItems="center" justifyContent="center">
-            <Text fontSize="1.2rem" >Sayan Maity</Text>
-            <Button
-              target="_blank"
-
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Meet
-            </Button>
-          </Flex>
-        </Flex>
-        <Flex flexDir="column" width="15rem" borderRadius="10px" alignItems="center" justifyContent="center" border="2px solid #81efcc" p="0.2rem">
-          <Flex p="1rem" backgroundColor="#81efcc" width="100%" height="100%" alignItems="center" justifyContent="center" borderTopLeftRadius="10px" borderTopRightRadius="10px">
-            <Image src={Joybroto} width="8rem" height="8rem" objectFit="cover" borderRadius="50%" border="3px solid #fff" />
-          </Flex>
-          <Flex p="1rem" flexDir="column" gap="1rem" alignItems="center" justifyContent="center">
-            <Text fontSize="1.2rem" >Joybroto Das</Text>
-            <Button
-              target="_blank"
-
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Meet
-            </Button>
-          </Flex>
-        </Flex>
-        <Flex flexDir="column" width="15rem" borderRadius="10px" alignItems="center" justifyContent="center" border="2px solid #81efcc" p="0.2rem">
-          <Flex p="1rem" backgroundColor="#81efcc" width="100%" height="100%" alignItems="center" justifyContent="center" borderTopLeftRadius="10px" borderTopRightRadius="10px">
-            <Image src={Pritam} width="8rem" height="8rem" objectFit="cover" borderRadius="50%" border="3px solid #fff" />
-          </Flex>
-          <Flex p="1rem" flexDir="column" gap="1rem" alignItems="center" justifyContent="center">
-            <Text fontSize="1.2rem" >Pritam Dey</Text>
-            <Button
-              target="_blank"
-
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Meet
-            </Button>
-          </Flex>
-        </Flex>
-        <Flex flexDir="column" width="15rem" borderRadius="10px" alignItems="center" justifyContent="center" border="2px solid #81efcc" p="0.2rem">
-          <Flex p="1rem" backgroundColor="#81efcc" width="100%" height="100%" alignItems="center" justifyContent="center" borderTopLeftRadius="10px" borderTopRightRadius="10px">
-            <Image src={Samriddhi} width="8rem" height="8rem" objectFit="cover" borderRadius="50%" border="3px solid #fff" />
-          </Flex>
-          <Flex p="1rem" flexDir="column" gap="1rem" alignItems="center" justifyContent="center">
-            <Text fontSize="1.2rem" >Samriddhi Halder</Text>
-            <Button
-              target="_blank"
-
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Meet
-            </Button>
-          </Flex>
-        </Flex>
-        <Flex flexDir="column" width="15rem" borderRadius="10px" alignItems="center" justifyContent="center" border="2px solid #81efcc" p="0.2rem">
-          <Flex p="1rem" backgroundColor="#81efcc" width="100%" height="100%" alignItems="center" justifyContent="center" borderTopLeftRadius="10px" borderTopRightRadius="10px">
-            <Image src={Raj} width="8rem" height="8rem" objectFit="cover" borderRadius="50%" border="3px solid #fff" />
-          </Flex>
-          <Flex p="1rem" flexDir="column" gap="1rem" alignItems="center" justifyContent="center">
-            <Text fontSize="1.2rem" >Raj Bhowmik</Text>
-            <Button
-              target="_blank"
-
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Meet
-            </Button>
-          </Flex>
-        </Flex>
-        <Flex flexDir="column" width="15rem" borderRadius="10px" alignItems="center" justifyContent="center" border="2px solid #81efcc" p="0.2rem">
-          <Flex p="1rem" backgroundColor="#81efcc" width="100%" height="100%" alignItems="center" justifyContent="center" borderTopLeftRadius="10px" borderTopRightRadius="10px">
-            <Image src={Debdutta} width="8rem" height="8rem" objectFit="cover" borderRadius="50%" border="3px solid #fff" />
-          </Flex>
-          <Flex p="1rem" flexDir="column" gap="1rem" alignItems="center" justifyContent="center">
-            <Text fontSize="1.2rem" >Debdutta Basu</Text>
-            <Button
-              target="_blank"
-
-              loadingText="Please Wait..."
-              variant="unstyled"
-              gap="0.5rem"
-              p="1.5rem"
-              width="fit-content"
-              display="flex"
-              borderRadius="30px"
-              transition={"all 0.3s ease"}
-              color={theme.colors.button.light_color}
-              backgroundColor={theme.colors.button.light_backgroundColor}
-              border="2px solid transparent"
-              _hover={{
-                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-                color: `${theme.colors.button.hover_light_color}`,
-                border: `${theme.colors.button.hover_light_border}`
-              }}
-              _active={{
-                backgroundColor: `${theme.colors.button.active_light_backgroundColor}`,
-              }}
-            >
-              Meet
-            </Button>
-          </Flex>
-        </Flex>
+        <VStack width="50%" alignItems="flex-start" >
+          <VStack gap="0" alignItems="flex-start">
+            <Text color={theme.colors.brand.primary_green_dark} fontSize="1.2rem">Passwordless Authentication</Text>
+            <Text>Passwordless authentication is an authentication method in which a user can log in to any particular product or system without entering (and having to remember) a password or any other knowledge-based secret.</Text>
+          </VStack>
+          <VStack gap="0" alignItems="flex-start">
+            <Text color={theme.colors.brand.primary_green_dark} fontSize="1.2rem">Google's Bard LLM</Text>
+            <Text>Elevate your derma disease predictions with the power of Google's Bard Language Model (LLM). Harness cutting-edge natural language processing to obtain comprehensive and accurate information, enhancing the capabilities of our application and ensuring you receive the most up-to-date and relevant insights.</Text>
+          </VStack>
+          <VStack gap="0" alignItems="flex-start">
+            <Text color={theme.colors.brand.primary_green_dark} fontSize="1.2rem">Interactive Charts for Data Visualization</Text>
+            <Text>Dive into your derma data like never before with our interactive charts. Uncover meaningful insights at a glance, thanks to dynamic visualizations that empower you to understand trends, correlations, and patterns in your data, making informed decisions simpler than ever.</Text>
+          </VStack>
+        </VStack>
       </Flex>
 
       {/* -------------------------------  Contact Us Section  -------------------------------- */}
-      <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="center" flexDir="column" alignItems="center" >
-        <Text fontSize="3rem" fontWeight="500" textAlign="center" >Contact Us</Text>
-        <Text fontSize="1.5rem" fontWeight="400" textAlign="center" >We are a team of 3 students from BITS Pilani, Goa Campus</Text>
-      </Flex>
+      <SectionTitle title={LandingSectionTitle[4].title} description={LandingSectionTitle[4].description} />
 
       <Flex width={{ base: "full", xl: "1280px" }} p="3rem" justifyContent="space-between" flexDir="row" alignItems="center" >
         <Flex width="50%" >
@@ -333,6 +131,7 @@ const LandingPage = () => {
               type="email"
               name="email"
               placeholder="Enter your email*"
+              _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }}
             />
             <ValidationError
               prefix="Email"
@@ -340,23 +139,31 @@ const LandingPage = () => {
               errors={state.errors}
             />
             <Textarea
+
               id="message"
               name="message"
               placeholder="Write your query here*"
+              _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }}
             />
             <ValidationError
               prefix="Message"
               field="message"
               errors={state.errors}
             />
-            <Button type="submit" backgroundColor={theme.colors.brand.primary_green_dark} border="2px solid transparent" _hover={{
-              backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
-              color: `${theme.colors.button.hover_light_color}`,
-              border: `${theme.colors.button.hover_light_border}`
-            }} variant="unstyled" p="1.5rem" display="flex" color="#fff" borderRadius="30px">Submit</Button>
-            {/* <Button type="submit" disabled={state.submitting}>
-              Submit
-            </Button> */}
+            <Button
+              type="submit"
+              backgroundColor={theme.colors.brand.primary_green_dark}
+              border="2px solid transparent"
+              _hover={{
+                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
+                color: `${theme.colors.button.hover_light_color}`,
+                border: `${theme.colors.button.hover_light_border}`
+              }}
+              variant="unstyled"
+              p="1.5rem"
+              display="flex"
+              color="#fff"
+              borderRadius="30px">Submit</Button>
           </form>
         </Flex>
         <Flex width="50%" alignItems="center" justifyContent="center">
@@ -365,8 +172,6 @@ const LandingPage = () => {
       </Flex>
 
       <Footer />
-
-
     </Flex>
   );
 };
