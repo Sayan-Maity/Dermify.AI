@@ -9,11 +9,11 @@ export const SidebarMainItems = [
       path: "/private/derma-detection",
       icon: "PiStethoscopeFill",
     },
-    {
-      title: "Skin Care",
-      path: "/private/skin-care",
-      icon: "PiMagicWand",
-    },
+    // {
+    //   title: "Skin Care",
+    //   path: "/private/skin-care",
+    //   icon: "PiMagicWand",
+    // },
     {
       title: "Search Disease",
       path: "/private/search-disease",
