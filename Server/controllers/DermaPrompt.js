@@ -9,7 +9,7 @@ const client = new DiscussServiceClient({
 });
 
 module.exports.dermaPrompt = async (req, res) => {
-  const { userPrompt, language, symptomPrompt } = req.body;
+  const { userPrompt } = req.body;
   try {
     const result = await client.generateMessage({
       model: MODEL_NAME,
@@ -22,7 +22,7 @@ module.exports.dermaPrompt = async (req, res) => {
         examples: [],
         messages: [
           {
-            content: `I am sending you a disease name(if you are getting two then select the first one), upon that return me a json having the following fields and also I will be providing you a language medium in which you have to give the response:
+            content: `I am sending you a disease name(if you are getting two then select the first one), upon that return me a json having the following fields :
             1. Description (a brief description about the disease)
             2. Symptoms (give atleast 10 symptoms of the disease)
             3. Causes (give atlease 5 causes of the disease)
@@ -31,7 +31,6 @@ module.exports.dermaPrompt = async (req, res) => {
             6. Link (give a wikipedia link related to the below disease)
   
             Disease name = ${userPrompt}
-            Language = ${language}
             
             give me the output in json :{
               "name": "",
