@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, HStack, Heading, Text, VStack, useTheme } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { SkinTipItems } from "../../constants/SkinTipItems";
 import {
@@ -15,11 +15,19 @@ import {
 ChartJS.register(LinearScale, PointElement, CategoryScale, Tooltip, Legend, LineElement,
   Title);
 import { Line } from 'react-chartjs-2';
-const Dashboard = () => {
-  const canvasRef = useRef(null);
+import axios from "axios";
+import Cookies from "js-cookie";
+import { IconStar } from "../../assets/svgs/Icons";
+import { Link } from "react-router-dom";
+import DashboardWrapper from "../../components/DashboardWrapper";
 
+const Dashboard = () => {
+  const theme = useTheme();
+  const canvasRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentString, setCurrentString] = useState(SkinTipItems[0]);
+  const [lifeStyleData, setLifeStyleData] = useState([])
+  const [waterIntakeData, setWaterIntakeData] = useState([])
 
   useEffect(() => {
     // Set up an interval to update the displayed string every 12 hours
@@ -38,79 +46,62 @@ const Dashboard = () => {
     setCurrentString(SkinTipItems[currentIndex]);
   }, [currentIndex, SkinTipItems]);
 
-  const userData = [
-    {
-      date: "15 Mar, 2003",
-      sleep: 5,
-    },
-    {
-      date: "20 Apr, 2003",
-      sleep: 5.5,
-    },
-    {
-      date: "12 May, 2003",
-      sleep: 6,
-    },
-    {
-      date: "14 Jun, 2003",
-      sleep: 6,
-    },
-    {
-      date: "30 Jul, 2003",
-      sleep: 5.5,
-    },
-  ]
-  const userData2 = [
-    {
-      date: "15 Mar, 2003",
-      exercise: 1,
-    },
-    {
-      date: "20 Apr, 2003",
-      exercise: 0,
-    },
-    {
-      date: "12 May, 2003",
-      exercise: 1.5,
-    },
-    {
-      date: "14 Jun, 2003",
-      exercise: 0,
-    },
-    {
-      date: "30 Jul, 2003",
-      exercise: 0,
-    },
-  ]
-  const userData3 = [
-    {
-      date: "15 Mar, 2003",
-      sunlight: 0,
-    },
-    {
-      date: "20 Apr, 2003",
-      sunlight: 0.2,
-    },
-    {
-      date: "12 May, 2003",
-      sunlight: 1,
-    },
-    {
-      date: "14 Jun, 2003",
-      sunlight: 0,
-    },
-    {
-      date: "30 Jul, 2003",
-      sunlight: 0,
-    },
-  ]
+
+  useEffect(() => {
+    const getLifestyleData = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user/getLifestyleAnalyticsData`,
+          {
+            headers: {
+              Authorization: "Bearer " + Cookies.get("token")
+            }
+          }
+        )
+        if (res.status === 200) {
+          setLifeStyleData(res.data.data)
+          console.log(res.data)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    getLifestyleData()
+  }, [])
+
+  // console.log("LifeStyleData", lifeStyleData)
+
+  useEffect(() => {
+    const getWaterIntakeData = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user/getWaterIntakeData`,
+          {
+            headers: {
+              Authorization: "Bearer " + Cookies.get("token")
+            }
+          }
+        )
+        if (res.status === 200) {
+          setWaterIntakeData(res.data.data)
+          console.log(res.data)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    getWaterIntakeData()
+  }, [])
+
+  console.log("WaterIntakeData", waterIntakeData)
+
 
   const jsonData = {
-    labels: userData.map((data) => data.date),
+    labels: lifeStyleData?.map((data) => data.date),
     datasets: [
       {
         label: "Sleep",
-        data: userData.map((data) => data.sleep),
+        data: lifeStyleData?.map((data) => data.sleep),
         borderWidth: 2,
         backgroundColor: "#3ce2ad",
         borderColor: '#3ce2ad',
@@ -120,7 +111,7 @@ const Dashboard = () => {
       },
       {
         label: "Exercise",
-        data: userData2.map((data) => data.exercise),
+        data: lifeStyleData?.map((data) => data.exercise),
         borderWidth: 2,
         backgroundColor: "#0078aa",
         borderColor: '#0078aa',
@@ -130,7 +121,7 @@ const Dashboard = () => {
       },
       {
         label: "Sunlight Exposure",
-        data: userData3.map((data) => data.sunlight),
+        data: lifeStyleData?.map((data) => data.sunlight),
         borderWidth: 2,
         backgroundColor: "red",
         borderColor: 'red',
@@ -162,35 +153,68 @@ const Dashboard = () => {
   };
 
 
+  const jsonData2 = {
+    labels: waterIntakeData?.map((data) => data.date),
+    datasets: [
+      {
+        label: "Water",
+        data: waterIntakeData?.map((data) => data.water),
+        borderWidth: 2,
+        backgroundColor: "#0078aa",
+        borderColor: '#0078aa',
+        fill: false,
+        tension: 0.8, //curve
+        cubicInterpolationMode: 'monotone',
+      },
+    ],
+  };
+
+  const options2 = {
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Water (Litres)',
+        },
+        min: 0,
+        max: 5
+      },
+    },
+  };
+
+
   /*
   
     Analytics Topics with input fields :
 
     We are recommending to use at least 2 analytics to track your health.
 
-      1. Lifestyle (daily date v/s amount of time spent on each activity)
+      1. Lifestyle (daily date v/s amount of time spent on each activity) (line chart)
         - Sleep
         - Exercise
         - Exposure to Sunlight
       
-      2. Skincare Routine
-        - Cleansing
-        - Moisturizing
-        - Toners
+      2. Skincare Routine (checkbox)
+        - Cleanser
+        - Moisturizer
+        - Toner
 
-      3. Diet
-        - Water Intake
+      3. Diet (checkbox) (Bar chart)
         - Fruits
         - Vegetables
         - Meat
-        - Dairy
-      
-      4. Bad Habits
-        - Alcohol
-        - Caffeine
-        - Sugar
+        
+      4. Water Intake (Quantity in litres) (line chart)
+        - Water
 
-      5. Stress
+      5. Stress (measure in 3 levels : low, moderate, high) (line chart)
         - Stress Level
         - Relaxation
         - Meditation
@@ -198,42 +222,55 @@ const Dashboard = () => {
   */
 
   return (
-    <Flex
-      p="2rem"
-      alignItems="flex-start"
-      justifyContent="center"
-      margin="auto"
-      color="#74809A"
-      maxH="100vh" overflowY="scroll"
-    >
+    <DashboardWrapper>
       <Flex gap="2rem" width="1200px" alignItems="flex-start" flexDir="column">
-        <Heading> Dashboard </Heading>
+        <Heading fontSize="2rem"> Your Dashboard </Heading>
         <Flex flexDir="column" border="1px solid #74809a" p="1rem 2rem" borderRadius="5px">
-          <Text>Tip of the day</Text>
-
-          <Text>{currentString.title}</Text>
+          <HStack >
+            <IconStar
+              width={"1.5rem"}
+              height={"1.5rem"}
+              colorStroke={"#3ce2ad"}
+            />
+            <Text fontSize="1.2rem" fontWeight={"bold"} color={theme.colors.brand.primary_green_dark}>Tip of the day</Text>
+          </HStack>
+          <Text>{currentString.title} :</Text>
           <Text>{currentString.description}</Text>
         </Flex>
 
         <Flex w="100%" >
-          {userData.length > 0 ? (
+          {lifeStyleData?.length > 0 || waterIntakeData?.length > 0 ? (
             <Flex w="100%" gap="1rem">
-              {/* ---------  Graph 1  -------- */}
-              <Flex w="50%" h="30rem" >
-                <Line ref={canvasRef} data={jsonData} options={options} height="30rem" width="100%" />
-              </Flex>
+              {/* ---------  Lifestyle Graph  -------- */}
+              {lifeStyleData?.length > 0 && (
+                <Flex w="50%" h="30rem" >
+                  <Line ref={canvasRef} data={jsonData} options={options} height="30rem" width="100%" />
+                </Flex>
+              )}
 
-              {/* ---------  Graph 2  -------- */}
-              <Flex w="50%" h="30rem" >
-                <Line ref={canvasRef} data={jsonData} options={options} height="30rem" width="100%" />
-              </Flex>
+              {/* ---------  Water Intake Graph  -------- */}
+              {waterIntakeData?.length > 0 && (
+                <Flex w="50%" h="30rem" >
+                  <Line ref={canvasRef} data={jsonData2} options={options2} height="30rem" width="100%" />
+                </Flex>
+
+              )}
+
             </Flex>
-          ) : (<Text>No Data</Text>)}
+          ) : (
+            <HStack alignItems="flex-start" justifyContent="flex-start">
+              <Text>Want to check your daily Skin Care analytics ?</Text>
+              <Text color={theme.colors.brand.primary_green_dark} _hover={{ textDecoration: "underline" }}>
+                <Link to="/private/health-analytics" >Click here</Link>
+              </Text>
+
+            </HStack>
+          )}
 
         </Flex>
 
       </Flex>
-    </Flex>
+    </DashboardWrapper>
   );
 };
 
