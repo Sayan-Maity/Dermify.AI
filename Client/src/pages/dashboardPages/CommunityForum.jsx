@@ -1,11 +1,13 @@
-import { Flex, Button, useToast, Input, Modal, ModalContent, ModalOverlay, ModalBody, ModalCloseButton, useDisclosure, Text, Image } from '@chakra-ui/react';
+import { Flex, Button, useToast, Input, Modal, ModalContent, ModalOverlay, ModalBody, ModalCloseButton, useDisclosure, Text, Image, useTheme, Heading, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
 // import 'draft-js/dist/Draft.css'; 
 import axios from 'axios';
 import RenderedContent from '../../components/RenderedContent';
+import DashboardWrapper from '../../components/DashboardWrapper';
 const CommunityForum = () => {
     const toast = useToast();
+    const theme = useTheme()
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [blogPosts, setBlogPosts] = useState([]);
     const [blogTitle, setBlogTitle] = useState('');
@@ -25,10 +27,20 @@ const CommunityForum = () => {
     };
 
     const handleStyleClick = (style) => {
+
         setEditorState(RichUtils.toggleInlineStyle(editorState, style));
     };
 
     const handleSaveClick = async () => {
+        if (blogTitle === "" || blogAuthor === "" || blogBannerImage === "") {
+            toast({
+                title: "Please fill all the fields",
+                isClosable: true,
+                duration: 2000,
+                status: "error",
+            });
+            return;
+        }
         const contentState = editorState.getCurrentContent();
         const rawContentState = JSON.stringify(convertToRaw(contentState));
         // console.log(rawContentState); 
@@ -42,11 +54,13 @@ const CommunityForum = () => {
             });
             if (res.status === 200) {
                 toast({
-                    title: 'Saved successfully',
-                    status: 'success',
-                    duration: 3000,
+                    title: "Your story is live !",
+                    variant: "left-accent",
+                    position: "top",
                     isClosable: true,
-                });
+                    duration: 2000,
+                    status: "success",
+                  });
                 setBlogAuthor('');
                 setBlogTitle('');
                 setBlogBannerImage('');
@@ -76,7 +90,8 @@ const CommunityForum = () => {
         const fetchBlogPosts = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/getCommunityForum`);
-                setBlogPosts(response.data);
+                const reversedData = response.data.reverse();
+                setBlogPosts(reversedData);
             } catch (error) {
                 console.error('Error fetching blog posts:', error);
             }
@@ -105,18 +120,26 @@ const CommunityForum = () => {
 
     console.log("ViewBlogPostObject =>", viewBlogPostObject);
 
+    // Truncate function to limit the content length
+    const truncateContent = (content, maxLength) => {
+        if (content.length > maxLength) {
+            return content.substring(0, maxLength) + '...';
+        }
+        return content;
+    };
+
     return (
-        <Flex p="2rem" alignItems="flex-start" justifyContent="center" margin="auto" maxH="100vh">
+        <DashboardWrapper>
             <Modal isOpen={checkIsOpenModal} onClose={closeModal} isCentered size="4xl">
                 <ModalOverlay />
-                <ModalContent width="100%" maxH="80vh" overflowY="scroll">
+                <ModalContent width="100%" borderRadius={"20px"}>
                     <ModalCloseButton />
-                    <ModalBody width="100%">
-                        <Flex flexDir="column" alignItems="center" justifyContent="center" width="100%" borderRadius="5px" p="1rem">
-                            <Flex flexDir="column" alignItems="flex-start" justifyContent="flex-start" width="100%">
-                                <Text>{viewBlogPostObject?.title}</Text>
-                                <Text>{viewBlogPostObject?.author}</Text>
-                                <Image src={viewBlogPostObject?.bannerImage} h={60} />
+                    <ModalBody width="100%" >
+                        <Flex flexDir="column" maxH="80vh" overflowY="scroll" alignItems="center" justifyContent="center" width="100%" borderRadius="5px" p="1rem">
+                            <Flex flexDir="column" alignItems="flex-start" justifyContent="flex-start" width="100%" gap={"1rem"}>
+                                <Heading>{viewBlogPostObject?.title}</Heading>
+                                <Text display="flex" alignItems="center" >Author :<Text ml={"0.5rem"} p="0 5px" borderRadius="5px" backgroundColor={theme.colors.brand.primary_green_dark}> {viewBlogPostObject?.author}</Text> </Text>
+                                <Image src={viewBlogPostObject?.bannerImage} h={60} borderRadius={"20px"} />
                                 <div>
                                     {viewBlogPostObject?.content.map((block, index) => {
                                         const text = block.getText();
@@ -135,46 +158,67 @@ const CommunityForum = () => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <Flex flexDir="row" h="90vh" width="1200px" alignItems="center" justifyContent="center" gap="1rem">
-                <Flex width="40%" flexDir="column" alignItems="center" borderRight="1px solid #333" pr="1rem" gap="1rem" maxH="100vh" h="90vh" overflowY="scroll">
 
-                    {blogPosts.map((post) => (
-                        <Flex key={post._id} flexDir="column" alignItems="flex-start" justifyContent="flex-start" width="100%" border="1px solid #333" borderRadius="5px" p="1rem">
-                            <Flex flexDir="column" alignItems="flex-start" justifyContent="flex-start" width="100%">
-                                <RenderedContent key={post._id} rawContentState={post.content} author={post?.author} />
-                                <Button onClick={() => viewSinglePost(post._id)}>View</Button>
+            <Flex flexDir="row" h="90vh" width="100%" alignItems="center" justifyContent="center" gap="1rem">
 
-                            </Flex>
-                        </Flex>
-                    ))}
+                <VStack width="40%" borderRight="1px solid #e4e6ea" alignItems="flex-start" justifyContent="flex-start" gap="1rem">
+                    <Heading fontSize="2rem">Check what World wants to share</Heading>
+                    <Flex w="100%" flexDir="column" alignItems="center" pr="1rem" gap="1rem" maxH="100vh" h="80vh" overflowY="auto" >
+                        {blogPosts.length === 0 ? (
+                            <VStack height="100%" alignItems="center" justifyContent="center">
+                                <Text>No posts yet !</Text>
+                                <Text>Be the first person to share your story</Text>
+                            </VStack>
+                        ) : (
+                            blogPosts.map((post) => (
+                                <Flex key={post._id} flexDir="column" alignItems="flex-start" justifyContent="flex-start" width="100%" border={`2px solid ${theme.colors.brand.primary_green_dark}`} borderRadius="20px" p="1rem">
+                                    <Flex flexDir="column" alignItems="flex-start" justifyContent="flex-start" width="100%" gap={"1rem"}>
+                                        <RenderedContent key={post._id} rawContentState={post.content} author={post?.author} />
+                                        <Button onClick={() => viewSinglePost(post._id)} backgroundColor={theme.colors.brand.primary_green_dark} border="2px solid transparent" _hover={{
+                                            backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
+                                            color: `${theme.colors.button.hover_light_color}`,
+                                            border: `${theme.colors.button.hover_light_border}`
+                                        }} variant="unstyled" p="1.5rem" display="flex" color="#fff" borderRadius="30px">View Post</Button>
+                                    </Flex>
+                                </Flex>
+                            ))
+                        )}
+                    </Flex>
 
-                </Flex>
-                <Flex flexDir="column" color="#333" width="100%" maxH="100vh" h="90vh" overflowY="scroll" alignItems="flex-start" justifyContent="flex-start" p="0 1rem">
+
+
+                </VStack>
+
+                <VStack width="100%" maxH="100vh" h="90vh" alignItems="flex-start" justifyContent="flex-start" p="0 1rem">
                     <Flex justifyContent="space-between" w="100%">
-                        <Flex gap="1rem">
-                            <Button onClick={() => handleStyleClick('BOLD')}>Bold</Button>
-                            <Button onClick={() => handleStyleClick('ITALIC')}>Italic</Button>
+                        <Flex>
+                            <Heading fontSize="2rem">Share your story !</Heading>
                         </Flex>
                         <Flex>
-                            <Button onClick={handleSaveClick}>Post</Button>
+                            <Button onClick={handleSaveClick} backgroundColor={theme.colors.brand.primary_green_dark} border="2px solid transparent" _hover={{
+                                backgroundColor: `${theme.colors.button.hover_light_backgroundColor}`,
+                                color: `${theme.colors.button.hover_light_color}`,
+                                border: `${theme.colors.button.hover_light_border}`
+                            }} variant="unstyled" p="1.5rem" display="flex" color="#fff" borderRadius="30px">Post Story</Button>
                         </Flex>
                     </Flex>
                     <Flex flexDir="column" gap="1rem" m="1rem 0" w="100%">
-                        <Input value={blogAuthor} onChange={(e) => setBlogAuthor(e.target.value)} placeholder='Author name' />
-                        <Input value={blogTitle} onChange={(e) => setBlogTitle(e.target.value)} placeholder='Write your blog title' />
-                        <Input value={blogBannerImage} onChange={(e) => setBlogBannerImage(e.target.value)} placeholder="Give a banner image url starting with ' https:// ' " />
+                        <Input value={blogAuthor} onChange={(e) => setBlogAuthor(e.target.value)} placeholder='Author name' _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }} />
+                        <Input value={blogTitle} onChange={(e) => setBlogTitle(e.target.value)} placeholder='Write your blog title' _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }} />
+                        <Input value={blogBannerImage} onChange={(e) => setBlogBannerImage(e.target.value)} placeholder="Give a banner image url starting with ' https:// ' " _focus={{ border: `1px solid ${theme.colors.brand.primary_green_dark}` }} />
                     </Flex>
 
-                    <Flex border="1px solid #333" p="0.5rem 1rem" borderRadius="5px" width="100%" height="100%" overflowY="scroll">
+                    <Flex p="0.5rem 1rem" borderRadius="0.375rem" width="100%" height="100%" overflowY="auto" border={`2px solid ${theme.colors.brand.primary_green_dark}`} >
                         <Editor
                             editorState={editorState}
                             onChange={handleEditorChange}
                             placeholder="Start typing...                                                                                                                                                                                                                                                         "
                         />
                     </Flex>
-                </Flex>
+                </VStack>
+
             </Flex>
-        </Flex>
+        </DashboardWrapper>
     );
 };
 
