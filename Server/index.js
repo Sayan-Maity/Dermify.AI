@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose')
 const allRoutes = require("./routes/AllRoutes")
 const authRoutes = require("./routes/AuthRoutes")
+const userRoutes = require("./routes/UserRoutes")
 
 
 
@@ -17,6 +18,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use("/api", allRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/user", userRoutes)
 
 
 app.get("/", (req, res) => {
