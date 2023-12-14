@@ -8,11 +8,12 @@
 ::-webkit-scrollbar {
   width: 0.4rem;
   background-color: #f7f7f7;
+  border-radius: 2rem;
   /* background-color: #eddfff; */
 }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #0078aa, #3ce2ad);
-  border-radius: 0.5rem;
+  border-radius: 2rem;
 }
 ::-webkit-scrollbar-thumb:hover {
   /* background: linear-gradient(to bottom, #63d5e1, #81efcc); */
