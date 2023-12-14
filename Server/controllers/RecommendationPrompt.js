@@ -33,7 +33,7 @@ module.exports.recommendationPrompt = async (req, res) => {
             Skin Type = ${skinType}
             Skin Concerns = ${skinConcern}
             
-            give me the output in this json structure :{{
+            give me the output in this json structure :{
               "skinType": "",
               "skinConcerns": "",
               "description": "",
@@ -42,7 +42,7 @@ module.exports.recommendationPrompt = async (req, res) => {
               "weeklyRoutine": ["", "", "", "", ""],
               "hydrationAndDiet": ["", "", ""],
               "advice": ["", "", ""]
-            }}`,
+            }`,
           },
         ],
       },
